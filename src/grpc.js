@@ -1,8 +1,20 @@
 
 
 const grpc = require('grpc')
-const protos = grpc.load(process.cwd() + '/src/channel.proto').voidrpc
+const protoloader = require('@grpc/proto-loader');
 const log = console.log.bind(console)
+
+const protofile = process.cwd() + '/src/channel.proto'
+const packageDefinition = protoloader.loadSync(
+    protofile,
+    {keepCase: true,
+     longs: String,
+     enums: String,
+     defaults: true,
+     oneofs: true
+    })
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition)
+const voidrpc = protoDescriptor.voidrpc
 
 class Server {
   constructor() {
@@ -22,7 +34,7 @@ class Server {
 
   start() {
     let server = this.server = new grpc.Server()
-    server.addService(protos.VoidRPC.service, {
+    server.addService(voidrpc.VoidRPC.service, {
       ping: this.onPing.bind(this),
       download: this.onDownload.bind(this),
     })
@@ -41,7 +53,6 @@ class Client {
   }
 
   connect(info) {
-    console.log('???')
     return new Promise((resolve, reject) => {
       let callback = (err, resp) => {
         console.log('return', err, resp)
@@ -52,10 +63,10 @@ class Client {
         }
       }
 
-      let client = new protos.VoidRPC(info.host+':'+info.port, grpc.credentials.createInsecure())
+      let client = new voidrpc.VoidRPC(info.host+':'+info.port, grpc.credentials.createInsecure())
       client.ping({pubkey: this.pubkey, host: this.host, port: this.port}, callback)
 
-      let call = client.download()
+      let call = client.download({})
 
       call.on('data', function(payload) {
           console.log(payload)
