@@ -1,6 +1,6 @@
 {
-  "name": "ever",
-  "version": "1.0.0",
+  "name": "ever-rpc",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.4.0",
+    "@hyperswarm/network": "0.0.4",
     "@nodeutils/defaults-deep": "^1.1.0",
     "grpc": "^1.18.0",
     "jsonrpc-bidirectional": "^8.4.0",
