@@ -1,0 +1,24 @@
+
+syntax = "proto3";
+
+package voidrpc;
+
+service VoidRPC {
+  rpc ping (PeerItem) returns (PeerItem) {}
+  rpc download (PeerItem) returns (stream PeerData) {}
+}
+
+message PeerItem {
+  string pubkey = 1;
+  string host = 2;
+  string port = 3;
+  string head = 4;
+}
+
+
+message PeerData {
+  string key  = 1;
+  int64 from = 2;
+  int64 size = 3;
+  bytes  data = 4;
+}
