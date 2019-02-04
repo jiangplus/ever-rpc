@@ -27,4 +27,8 @@ testing rpc for multiple transport protocols
  * udp
  * crust
  * hole punching
- * bob soscket
+ * webtorrent
+ * bob socket
+ * blip
+ * socket.io
+ * sockjs
